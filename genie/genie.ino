@@ -1,24 +1,3 @@
-/***************************************************
-DFPlayer - A Mini MP3 Player For Arduino
- <https://www.dfrobot.com/product-1121.html>
- 
- ***************************************************
- This example shows the basic function of library for DFPlayer.
- 
- Created 2016-12-07
- By [Angelo qiao](Angelo.qiao@dfrobot.com)
- 
- GNU Lesser General Public License.
- See <http://www.gnu.org/licenses/> for details.
- All above must be included in any redistribution
- ****************************************************/
-
-/***********Notice and Trouble shooting***************
- 1.Connection and Diagram can be found here
- <https://www.dfrobot.com/wiki/index.php/DFPlayer_Mini_SKU:DFR0299#Connection_Diagram>
- 2.This code is tested on Arduino Uno, Leonardo, Mega boards.
- ****************************************************/
-
 #include <FastLED.h>
 #include "Arduino.h"
 #include "DFRobotDFPlayerMini.h"
@@ -59,8 +38,34 @@ void shine(){
   }
   FastLED.show();
 }
+
+#define YELLOW_LED      32
+#define YELLOW_BUTTON   2
+#define BLUE_LED        33
+#define BLUE_BUTTON     15
+#define GREEN_LED       25
+#define GREEN_BUTTON    12
+#define RED_LED         26
+#define RED_BUTTON      13
+
 void setup()
 {
+  pinMode(YELLOW_LED, OUTPUT);
+  digitalWrite(YELLOW_LED, LOW);
+  pinMode(RED_LED, OUTPUT);
+  digitalWrite(RED_LED, LOW);
+  pinMode(BLUE_LED, OUTPUT);
+  digitalWrite(BLUE_LED, LOW);
+  pinMode(GREEN_LED, OUTPUT);
+  digitalWrite(GREEN_LED, LOW);
+
+  pinMode(YELLOW_BUTTON, INPUT_PULLUP);
+  pinMode(RED_BUTTON, INPUT_PULLUP);
+  pinMode(BLUE_BUTTON, INPUT_PULLUP);
+  pinMode(GREEN_BUTTON, INPUT_PULLUP);
+  Serial.begin(115200);
+  return;
+
   FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, NUM_LEDS); 
   Serial2.begin(9600);
 
@@ -160,6 +165,55 @@ void blink(){
 }
 void loop()
 {
+  static int YELLOW_state = 1;
+  //Serial.println(F("SUP!"));
+  if (digitalRead(YELLOW_BUTTON)) {
+    Serial.println(F("YELLOW Button click!"));
+    if (YELLOW_state == 1) {
+      YELLOW_state = 0;
+      digitalWrite(YELLOW_LED, LOW);
+    } else {
+      YELLOW_state = 1;
+      digitalWrite(YELLOW_LED, HIGH);
+    }
+  }
+    static int BLUE_state = 1;
+  //Serial.println(F("SUP!"));
+  if (digitalRead(BLUE_BUTTON)) {
+    Serial.println(F("BLUE Button click!"));
+    if (BLUE_state == 1) {
+      BLUE_state = 0;
+      digitalWrite(BLUE_LED, LOW);
+    } else {
+      BLUE_state = 1;
+      digitalWrite(BLUE_LED, HIGH);
+    }
+  }
+    static int RED_state = 1;
+  //Serial.println(F("SUP!"));
+  if (digitalRead(RED_BUTTON)) {
+    Serial.println(F("RED Button click!"));
+    if (RED_state == 1) {
+      RED_state = 0;
+      digitalWrite(RED_LED, LOW);
+    } else {
+      RED_state = 1;
+      digitalWrite(RED_LED, HIGH);
+    }
+  }
+    static int GREEN_state = 1;
+  //Serial.println(F("SUP!"));
+  if (digitalRead(GREEN_BUTTON)) {
+    Serial.println(F("GREEN Button click!"));
+    if (GREEN_state == 1) {
+      GREEN_state = 0;
+      digitalWrite(GREEN_LED, LOW);
+    } else {
+      GREEN_state = 1;
+      digitalWrite(GREEN_LED, HIGH);
+    }
+  }
+  return;
   static unsigned long timer = millis();
 
   if(playing == true) {
@@ -273,3 +327,8 @@ void printDetail(uint8_t type, int value){
   }
   
 }
+
+
+
+
+
